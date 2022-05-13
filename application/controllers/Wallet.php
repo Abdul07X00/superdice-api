@@ -1,10 +1,10 @@
 <?php
-class Transaction extends EIS_Controller{
+class Wallet extends EIS_Controller{
 
         public function __construct()
     {
         parent::__construct();
-        $this->load->model('Transaction_model','transaction_model');
+        $this->load->model('Wallet_model','wallet_model');
         $this->load->helper(array('url','html','form'));
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept");

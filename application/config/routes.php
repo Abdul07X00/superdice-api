@@ -55,5 +55,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['home'] = 'home/index';
 
 // NFT
-$route['deposit'] = 'Transaction/deposit';
-$route['remove-whitelist'] = 'Order/removeWhitelist';
+$route['wallet/deposit'] = 'Transaction/deposit';

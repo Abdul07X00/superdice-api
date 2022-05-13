@@ -1,5 +1,5 @@
 <?php if(!defined('BASEPATH')){exit('No direct script access allowed');}
-    class Transaction_model extends CI_Model{
+    class Wallet_model extends CI_Model{
 
             public function submitWhitelist($data)
         {
