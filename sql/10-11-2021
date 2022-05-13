@@ -1,0 +1,2 @@
+ALTER TABLE `tbl_orders` ADD `level` TINYINT NOT NULL DEFAULT '0' AFTER `order_id`;
+ALTER TABLE `tbl_promotions` ADD `permit_number` VARCHAR(100) NULL DEFAULT NULL AFTER `currency`;

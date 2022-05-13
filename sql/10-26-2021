@@ -1,0 +1,1 @@
+INSERT INTO `tbl_payment_method` (`id`, `name`, `payment_method`, `status`, `added_date`) VALUES (NULL, 'RazorPay', 'RazorPay', '1', CURRENT_TIMESTAMP);

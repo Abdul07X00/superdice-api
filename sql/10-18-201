@@ -1,0 +1,5 @@
+ALTER TABLE `tbl_promotions` CHANGE `title` `title` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `title_ar` `title_ar` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `tbl_promotions` CHANGE `draw_title` `draw_title` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `draw_title_ar` `draw_title_ar` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `tbl_products` CHANGE `title` `title` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL, CHANGE `title_ar` `title_ar` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `tbl_user_payment_card_details` CHANGE `source_id` `source_id` TEXT NOT NULL;
+ALTER TABLE `tbl_promotions` CHANGE `type` `type` ENUM('normal','bundle','upcoming') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'normal';

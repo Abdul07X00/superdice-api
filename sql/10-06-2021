@@ -1,0 +1,2 @@
+ALTER TABLE `tbl_promotions` ADD `fresh_catch` INT NOT NULL DEFAULT '25' AFTER `extra_tickets`;
+ALTER TABLE `tbl_promotions` ADD `updated_at` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `status`;

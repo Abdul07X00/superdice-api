@@ -1,0 +1,9 @@
+ALTER TABLE `tbl_users` ADD `user_level` ENUM('Bronze','Silver','Gold','Vip') NOT NULL DEFAULT 'Bronze' AFTER `device_token`;
+ALTER TABLE `tbl_promotions` ADD `draw_note` TEXT NULL DEFAULT NULL AFTER `draw_detail_ar`, ADD `draw_note_ar` TEXT NULL DEFAULT NULL AFTER `draw_note`;
+-- add last_adding_at column to track user last cart insertion 
+ALTER TABLE `tbl_user_carts` ADD `notification_pushed_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`; 
+-- add push_level column to track if there was a pushed and pushed number 
+ALTER TABLE `tbl_user_carts` ADD `push_level` INT NULL DEFAULT '0' AFTER `notification_pushed_at`; 
+ALTER TABLE `tbl_user_carts` ADD `push_level_notification` INT NULL DEFAULT '0' AFTER `push_level`; 
+-- add email_pushed_at to track of the last push time
+ALTER TABLE `tbl_user_carts` ADD `email_pushed_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `push_level_notification`; 

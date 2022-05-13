@@ -1,0 +1,25 @@
+CREATE TABLE `tbl_user_payment_cards` (
+  `id` int(11) NOT NULL,
+  `payment_method` enum('PayPal','Stripe','Checkout','Ngenius') NOT NULL,
+  `token` int(11) NOT NULL,
+  `card` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `tbl_user_payment_cards` ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `tbl_user_payment_cards` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `checkout_trigger_log` (
+  `id` int(11) NOT NULL,
+  `data` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `checkout_trigger_log` ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `checkout_trigger_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `tbl_user_payment_cards` ADD `user_id` INT NOT NULL AFTER `id`;
+ALTER TABLE `tbl_user_payment_cards` CHANGE `token` `token` TEXT NULL DEFAULT NULL;
+ALTER TABLE `tbl_user_payment_cards` CHANGE `card` `card` TEXT NULL DEFAULT NULL;

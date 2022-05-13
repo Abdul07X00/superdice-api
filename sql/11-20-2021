@@ -1,0 +1,1 @@
+ALTER TABLE `tbl_banners` ADD `level` INT NOT NULL DEFAULT '-1' AFTER `banner_id`;

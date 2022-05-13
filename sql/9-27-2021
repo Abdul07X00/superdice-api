@@ -1,0 +1,3 @@
+ALTER TABLE `tbl_banners` ADD `file_ar` VARCHAR(255) NULL AFTER `file`;
+ALTER TABLE `tbl_banners` ADD `button_name_en` VARCHAR(100) NOT NULL DEFAULT 'Shop Now' AFTER `link`, ADD `button_name_ar` VARCHAR(100) NOT NULL DEFAULT 'تسوق الآن' AFTER `button_name_en`;
+ALTER TABLE `tbl_user_payment_cards` CHANGE `token` `card_token` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;

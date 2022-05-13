@@ -1,0 +1,16 @@
+ALTER TABLE `tbl_promotions` ADD `original_price` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `type_id`;
+
+CREATE TABLE `tbl_user_card_details` (
+  `card_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `card_holder_name` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `card_number` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `expiry_month` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `expiry_year` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `tbl_user_card_details` ADD PRIMARY KEY (`card_id`);
+
+ALTER TABLE `tbl_user_card_details` MODIFY `card_id` int(11) NOT NULL AUTO_INCREMENT;
