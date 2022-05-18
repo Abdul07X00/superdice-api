@@ -121,6 +121,16 @@ class EIS_Controller extends CI_Controller{
 		}
 		return $token;
 	}
+
+		public function shuffleDice()
+	{
+		$draw = [];
+		for ($i = 0; $i < 3; $i++){
+			array_push($draw, rand(1,6));
+		}
+		return $draw;
+	}
+
 	
 }
 

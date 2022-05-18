@@ -11,178 +11,92 @@ class Wallet extends EIS_Controller{
         header("Content-Type: text/html; charset=utf-8");
     }
 
-      public function submitOrder()
+      public function load()
     {
-      $this->checkRequiredFields(array('wallet_address','transaction_token','type','server_type','ip_address'));
-      if($this->jsonData('type',true) == "default"){
-        $this->checkRequiredFields(array('plan_name'));
-      }
-      $this->order_model->existTransaction($this->jsonData('transaction_token',true));
-      $data['wallet_address'] = $this->jsonData('wallet_address',true);
-      $data['transaction_token'] = $this->jsonData('transaction_token',true);
-      $data['type'] = $this->jsonData('type',true);
-      $data['plan_name'] = $this->jsonData('plan_name',true);
-      $data['server_type'] = $this->jsonData('server_type',true);
-      $data['ip_address'] = $this->jsonData('ip_address',true);
-      $data['hours'] = $this->getHours($data['type'], $data['plan_name']);
-      $records = $this->order_model->getWhitelistRecords($data['server_type']);
-      $server = $this->ipWhitelisting($data['wallet_address'], $data['transaction_token'], $data['type'], $data['plan_name'], $data['server_type'], $records, $data['ip_address'], $data['hours']);
-      if ($server) {
-              $result = array(
-                  'success' => true,
-                  'data' => $server,
-                  'message' =>"Succesfully whitelisted"
-              );
-              echo json_encode($result);
-              exit;
+      $board = $this->wallet_model->createBoard();
+      if ($board) {
+        $result = array(
+            'success' => true,
+            'data' => $board
+        );
+        echo json_encode($result);
+        exit;
       } else {
               $result = array(
                   'success' => false,
-                  'message' =>"Error in submit whitelist form"
+                  'message' =>"Unexpected error occured, Server too busy"
               );
               echo json_encode($result);
               exit;
       }
     }
 
-      public function getHours($type, $plan)
+      public function deposit()
     {
-      if($type == "default"){
-        if($plan == "Daily"){
-          return 24;
-        }else if($plan == "Weekly"){
-          return 168;
-        }else if($plan == "Monthly"){
-          return 720;
-        }else if($plan == "3months"){
-          return 2160;
-        }else if($plan == "6months"){
-          return 4320;
-        }else if($plan == "Yearly"){
-          return 8640;
-        }
-      }else if($type == "metamask"){
-        if($plan == "Monthly"){
-          return 720;
-        }
-      }
-      return 0;
+      $this->checkRequiredFields(array('wallet_address','txn_token','network','currency','amount'));
+      $this->wallet_model->existTransaction($this->jsonData('txn_token',true));
+      $data['wallet_address'] = $this->jsonData('wallet_address',true);
+      $data['txn_token'] = $this->jsonData('txn_token',true);
+      $data['method'] = "deposit";
+      $data['network'] = $this->jsonData('network',true);
+      $data['currency'] = $this->jsonData('currency',true);
+      $this->transaction($data, $this->jsonData('amount',true), "add");
     }
 
-      public function ipWhitelisting($wallet_address, $transaction_token, $type, $plan_name, $server_type, $records, $ip_address, $hours)
+      public function bet()
     {
-      $now = new DateTime();
-      if($type == "default"){
-        if($server_type == "CRO"){
-          if($records <= 100){
-            $output = $this->sshConnect($wallet_address, $transaction_token, $type, $plan_name, $server_type, '5.9.22.103', 22, 'root', 'RentN0dePriv4teS3rv3r987123', $ip_address, $hours, 8545);
-            return $output;
-          }else if ($records > 100 && $records <= 200){
-            return false;
-          }else if ($records > 200 && $records <= 300){
-            return false;
-          }
-        }else if($server_type == "BSC"){
-          if($records <= 100){
-            $output = $this->sshConnect($wallet_address, $transaction_token, $type, $plan_name, $server_type, '88.198.48.29', 22, 'root', 'RentN0dePriv4teS3rv3r987123', $ip_address, $hours, 8545);
-            return $output;
-          }else if ($records > 20 && $records <= 40){
-            return false;
-          }else if ($records > 40 && $records <= 60){
-            return false;
-          }
-        }else if($server_type == "ETH"){
-          if($records <= 100){
-            $output = $this->sshConnect($wallet_address, $transaction_token, $type, $plan_name, $server_type, '142.132.154.225', 22, 'root', 'RentN0dePriv4teS3rv3r987123', $ip_address, $hours, 8545);
-            return $output;
-          }else if ($records > 100 && $records <= 200){
-            return false;
-          }else if ($records > 200 && $records <= 300){
-            return false;
-          }
-        }
-      }else if($type == "metamask"){
-        if($server_type == "CRO"){
-          if($records <= 200){
-            $output = $this->sshConnect($wallet_address, $transaction_token, $type, $plan_name, $server_type, '5.9.22.103', 22, 'root', 'RentN0dePriv4teS3rv3r987123', $ip_address, $hours, 8000);
-            return $output;
-          }else if ($records > 200 && $records <= 400){
-            return false;
-          }else if ($records > 400 && $records <= 600){
-            return false;
-          }
-        }else if($server_type == "BSC"){
-          if($records <= 200){
-            $output = $this->sshConnect($wallet_address, $transaction_token, $type, $plan_name, $server_type, '142.132.197.253', 22, 'root', 'RentN0dePriv4teS3rv3r987123', $ip_address, $hours, 8000);
-            return $output;
-          }else if ($records > 200 && $records <= 400){
-            return false;
-          }else if ($records > 400 && $records <= 600){
-            return false;
-          }
-        }else if($server_type == "ETH"){
-          if($records <= 200){
-            $output = $this->sshConnect($wallet_address, $transaction_token, $type, $plan_name, $server_type, '142.132.206.202', 22, 'root', 'RentN0dePriv4teS3rv3r987123', $ip_address, $hours, 8000);
-            return $output;
-          }else if ($records > 200 && $records <= 400){
-            return false;
-          }else if ($records > 400 && $records <= 600){
-            return false;
-          }
-        }
-      }
-    }
-
-
-      public function sshConnect($wallet_address, $transaction_token, $type, $plan_name, $server_type, $server_ip, $port, $user, $password, $ip_address, $hours, $whitelist_port)
-    {
-      $connection = ssh2_connect($server_ip, $port);
-      ssh2_auth_password($connection, $user, $password);
-      if($type == "metamask"){
-        $run = "./whitelist-metamask.sh ".$ip_address." ".$hours;
-      }else{
-        $run = "./whitelist.sh ".$ip_address." ".$hours;
-      }
-      $stream = ssh2_exec($connection, $run);
-      $output['ws'] = "ws://".$server_ip.":".$whitelist_port;
-      if($type == "metamask"){
-        if($server_type == "CRO"){
-          $output['http'] = CRO_URL;
-        }else if($server_type == "BSC"){
-          $output['http'] = BSC_URL;
-        }else if($server_type == "ETH"){
-          $output['http'] = ETH_URL;
+      $this->checkRequiredFields(array('wallet_address','board_id','network','currency','amount','side'));
+      $lastWallet = $this->wallet_model->getLastWalletHistory($this->jsonData('wallet_address',true), $this->jsonData('network',true), $this->jsonData('currency',true));
+      $existBoard = $this->wallet_model->existBoard($this->jsonData('board_id',true));
+      if(@$lastWallet->new_amount >= $this->jsonData('amount',true) && $existBoard){
+        $data['wallet_address'] = $this->jsonData('wallet_address',true);
+        $data['txn_token'] = "";
+        $data['method'] = "bet";
+        $data['network'] = $this->jsonData('network',true);
+        $data['currency'] = $this->jsonData('currency',true);
+        $data['board_id'] = $this->jsonData('board_id',true);
+        $transaction = $this->transaction($data, $this->jsonData('amount',true), "minus");
+        if($transaction){
+          $betArr['board_id'] = $this->jsonData('board_id',true);
+          $betArr['wallet_address'] = $this->jsonData('wallet_address',true);
+          $betArr['network'] = $this->jsonData('network',true);
+          $betArr['currency'] = $this->jsonData('currency',true);
+          $betArr['amount'] = $this->jsonData('amount',true);
+          $betArr['side'] = $this->jsonData('side',true);
+          $this->wallet_model->submitBet($betArr);
         }
       }else{
-        $output['http'] = "https://".$server_ip.":".$whitelist_port;
+        $result = array(
+          'success' => false,
+          'message' =>"No balance or Board Doesn't exist"
+        );
+        echo json_encode($result);
+        exit;
       }
-      $remaining_hours = $this->order_model->checkMyLastOrder($wallet_address, $type, $server_type, $ip_address) + $hours;
-      $output['valid_till'] = new DateTime('now +'.$remaining_hours.' hours');
-      // Insert Records
-      $insert['wallet_address'] = $wallet_address;
-      $insert['transaction_token'] = $transaction_token;
-      $insert['type'] = $type;
-      $insert['plan_name'] = $plan_name;
-      $insert['server_type'] = $server_type;
-      $insert['ip_address'] = $ip_address;
-      $insert['hours'] = $this->getHours($type, $plan_name);
-      $insert['created_at'] = date("Y-m-d H:i:s");
-      $this->order_model->submitWhitelist($insert);
-      return $output;
     }
 
-      public function removeWhitelist()
+      public function rollDice()
     {
-      // $result = $this->db->select('*')->from("tbl_whitelists")->where(array("status"=> 1))->get()->result();
+      $draw = $this->shuffleDice();
+      $existBoard = $this->wallet_model->existBoard();
+      if($existBoard){
+        $existBet = $this->wallet_model->existBet($existBoard->id);
+        if($existBet){
+          $data["draw"] = $draw;
+          $this->wallet_model->updateBoard($data);
+        }
+      }
     }
 
-    //   public function getDatetimeNow() 
-    // {
-    //   $tz_object = new DateTimeZone('Asia/Dubai');
-    //   $datetime = new DateTime();
-    //   $datetime->setTimezone($tz_object);
-    //   return $datetime->format('Y\-m\-d\ h:i:s');
-    // }
+      public function transaction($data, $amount, $operation)
+    {
+      $lastWallet = $this->wallet_model->getLastWalletHistory($data['wallet_address'], $data['network'], $data['currency']);
+      $data['last_amount'] = @$lastWallet->new_amount?@$lastWallet->new_amount:0;
+      $data['new_amount'] = $operation == "add" ? (@$lastWallet->new_amount + $amount) : (@$lastWallet->new_amount - $amount);
+      $transaction = $this->wallet_model->submitTransaction($data);
+      return true;
+    }
+
 
     
     

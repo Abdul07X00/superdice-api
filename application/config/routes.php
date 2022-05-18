@@ -49,10 +49,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'home';
+$route['default_controller'] = 'wallet';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-$route['home'] = 'home/index';
 
 // NFT
-$route['wallet/deposit'] = 'Transaction/deposit';
+$route['wallet/deposit'] = 'wallet/deposit';
+$route['board/load'] = 'wallet/load';
+$route['board/bet'] = 'wallet/bet';
+$route['board/roll-dice'] = 'wallet/rollDice';

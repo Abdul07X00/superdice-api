@@ -23,7 +23,7 @@ date_default_timezone_set('Asia/Dubai');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://api.rentnode.io/';
+$config['base_url'] = 'https://riwa.me/super-dice-api/';
 
 /*
 |--------------------------------------------------------------------------

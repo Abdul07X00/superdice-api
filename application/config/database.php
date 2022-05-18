@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -74,11 +74,11 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
+	'dsn'   => 'pgsql:host=localhost;port=5432;dbname=riwa_v1',
 	'hostname' => 'localhost',
-	'username' => 'rentnode',
-	'password' => 'Rentnode@2022',
-	'database' => 'rentnode',
+	'username' => 'riwa', // ishro
+	'password' => 'Riwa1234!@#$', // DevDev123!
+	'database' => 'superdice', // ishro_v2
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
