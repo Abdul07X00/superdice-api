@@ -1,6 +1,28 @@
 <?php if(!defined('BASEPATH')){exit('No direct script access allowed');}
     class Wallet_model extends CI_Model{
 
+            public function getWallets($wallet_address, $network)
+        {
+            $wallets = [];
+            if($wallet_address){
+                $wallets = $this->db->select('*')->from("tbl_wallet")->where(array("network"=>$network, "status"=>1))->get()->result();
+                foreach($wallets as $wallet){
+                    $wallet->value_options = json_decode($wallet->value_options);
+                    $wallet->value = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address, "network"=>$wallet->network, "currency"=>$wallet->currency))->order_by("created_at","desc")->get()->row();
+                }
+            }
+            return $wallets;
+        }
+
+            public function getTransactions($wallet_address)
+        {
+            $transactions = [];
+            if($wallet_address){
+                $transactions = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address, "status"=>1))->get()->result();
+            }
+            return $transactions;       
+        }
+
             public function createBoard()
         {
             $board = $this->db->select('*')->from("tbl_boards")->order_by("id","desc")->get()->row();
@@ -17,9 +39,14 @@
             return $board;
         }
 
-            public function updateBoard($data)
+            public function updateBoard($data, $board_id)
         {
-            
+            $update = $this->db->where(array('id'=> $board_id))->update('tbl_boards', $data);
+            if($update){
+                return true;
+            }else{
+                return false;
+            }
         }
 
             public function existBoard($board_id="")
@@ -32,7 +59,13 @@
             return $res;
         }
 
-            public function existBet($board_id)
+            public function getBoard($board_id="")
+        {
+            $res = $this->db->select('*')->from("tbl_boards")->where(array("id"=> $board_id))->get()->row();
+            return $res;
+        }
+
+            public function existBets($board_id)
         {
             $bets = $this->db->select('*')->from("tbl_board_bets")->where("board_id", $board_id)->get()->result();
             return $bets;
@@ -60,6 +93,16 @@
             return;
         }
 
+            public function updateTransaction($data, $wallet_address, $network, $currency)
+        {
+            $update = $this->db->where(array('wallet_address'=> $wallet_address, 'network'=> $network, 'currency'=> $currency))->update('tbl_transactions', $data);
+            if($update){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
             public function submitTransaction($data)
         {
             $res = $this->db->insert('tbl_transactions',$data);
@@ -70,11 +113,28 @@
             }
         }
 
+        
+            public function existSameBet($data)
+        {
+            $res = $this->db->select('*')->from("tbl_board_bets")->where(array("board_id"=>$data['board_id'], "wallet_address"=>$data['wallet_address'], "network"=> $data['network'], "currency"=> $data['currency'], "side"=> $data['side']))->get()->row();
+            return $res;
+        }
+
             public function submitBet($data)
         {
             $res = $this->db->insert('tbl_board_bets',$data);
             if($res) {
                 return $this->db->insert_id();
+            }else{
+                return false;
+            }
+        }
+
+            public function updateBet($id, $data)
+        {
+            $update = $this->db->where(array('id'=> $id))->update('tbl_board_bets', $data);
+            if($update){
+                return true;
             }else{
                 return false;
             }

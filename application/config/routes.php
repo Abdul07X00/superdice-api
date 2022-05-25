@@ -54,7 +54,11 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 // NFT
+$route['wallet/load'] = 'wallet/walletLoad';
 $route['wallet/deposit'] = 'wallet/deposit';
-$route['board/load'] = 'wallet/load';
+$route['wallet/withdraw/request'] = 'wallet/withdrawRequest';
+$route['transactions'] = 'wallet/loadTransactions';
+
+$route['board/load'] = 'wallet/boardLoad';
 $route['board/bet'] = 'wallet/bet';
 $route['board/roll-dice'] = 'wallet/rollDice';
