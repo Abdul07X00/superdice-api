@@ -5,7 +5,7 @@
         {
             $wallets = [];
             if($wallet_address){
-                $wallets = $this->db->select('*')->from("tbl_wallet")->where(array("network"=>$network, "status"=>1))->get()->result();
+                $wallets = $this->db->select('*')->from("tbl_wallets")->where(array("network"=>$network, "status"=>1))->get()->result();
                 foreach($wallets as $wallet){
                     $wallet->value_options = json_decode($wallet->value_options);
                     $wallet->value = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address, "network"=>$wallet->network, "currency"=>$wallet->currency))->order_by("created_at","desc")->get()->row();
