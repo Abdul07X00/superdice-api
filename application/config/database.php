@@ -74,7 +74,7 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'   => 'pgsql:host=localhost;port=3306;dbname=riwa_v1',
+	'dsn'   => 'pgsql:host=35.193.145.78;port=3306;dbname=superdice_v1',
 	'hostname' => '35.193.145.78',
 	'username' => 'root',
 	'password' => 'cd$V=Hg~~.T$Hi3v',
