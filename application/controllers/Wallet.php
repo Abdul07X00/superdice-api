@@ -42,6 +42,12 @@ class Wallet extends EIS_Controller{
       $data['network'] = $this->jsonData('network',true);
       $data['currency'] = $this->jsonData('currency',true);
       $transaction = $this->transaction($this->jsonData('wallet_address',true),$this->jsonData('txn_token',true),"deposit", 0,0, $this->jsonData('network',true), $this->jsonData('currency',true),$this->jsonData('amount',true), "add");
+      $result = array(
+        'success' => true,
+        'message' =>"Transaction has been successful"
+      );
+      echo json_encode($result);
+      exit;
     }
 
       public function withdrawRequest()
