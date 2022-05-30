@@ -57,7 +57,6 @@ class Wallet extends EIS_Controller{
       exit;
     }
 
-
       public function loadTransactions()
     {
       $this->checkRequiredFields(array('wallet_address'));
