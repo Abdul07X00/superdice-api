@@ -1,1 +1,0 @@
-ALTER TABLE `tbl_users` ADD `stripe_user_id` VARCHAR(100) NULL DEFAULT NULL AFTER `test_user`;

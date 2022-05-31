@@ -1,1 +1,0 @@
-ALTER TABLE `tbl_promotions` ADD `country` VARCHAR(50) NOT NULL DEFAULT 'IN' AFTER `bundle_ids`;

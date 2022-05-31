@@ -1,3 +1,0 @@
-ALTER TABLE `tbl_promotions` ADD `show_timer` VARCHAR(50) NOT NULL DEFAULT 'true' AFTER `highlight`;
-ALTER TABLE `tbl_promotions` ADD `start_date` DATE NULL DEFAULT NULL AFTER `worth_price`;
-INSERT INTO `tbl_payment_method` (`id`, `name`, `payment_method`, `status`, `added_date`) VALUES (NULL, 'Novapago', 'novapago', '1', '2021-11-10 00:00:00');

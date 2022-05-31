@@ -1,1 +1,0 @@
-ALTER TABLE `tbl_users` ADD `email_sent_at` DATETIME NULL DEFAULT NULL AFTER `created_at`;

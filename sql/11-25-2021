@@ -1,5 +1,0 @@
-RENAME TABLE `ishro_v3`.`tbl_user_otp_attempts` TO `ishro_v3`.`tbl_user_action_attempts`;
-ALTER TABLE `tbl_user_action_attempts` ADD `type` ENUM('otp','login') NOT NULL DEFAULT 'otp' AFTER `id`;
-ALTER TABLE `tbl_user_action_attempts` CHANGE `otp` `otp` INT(100) NULL DEFAULT NULL;
-ALTER TABLE `tbl_user_action_attempts` ADD `ip_address` VARCHAR(200) NULL DEFAULT NULL AFTER `otp`;
-ALTER TABLE `tbl_user_action_attempts` CHANGE `otp` `otp_code` INT(100) NULL DEFAULT NULL;

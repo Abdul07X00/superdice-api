@@ -1,1 +1,0 @@
-ALTER TABLE `tbl_promotion_winner_details` ADD `winner_announced_on` DATE NULL DEFAULT NULL AFTER `winner_image`;

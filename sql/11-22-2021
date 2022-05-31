@@ -1,2 +1,0 @@
-INSERT INTO `tbl_payment_method` (`id`, `name`, `payment_method`, `status`, `added_date`) VALUES (NULL, 'PayTM', 'PayTM', '1', CURRENT_TIMESTAMP);
-ALTER TABLE `tbl_users` ADD `login_type` VARCHAR(200) NOT NULL DEFAULT 'manual' AFTER `signed_up_source`;

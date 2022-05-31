@@ -1,3 +1,0 @@
-ALTER TABLE `tbl_users` ADD `refresh_token` TEXT NULL DEFAULT NULL AFTER `token`;
-ALTER TABLE `tbl_orders` ADD `delivery_cost` INT NOT NULL DEFAULT '0' AFTER `user_paid_amount`;
-ALTER TABLE `tbl_banners` ADD `position` INT NOT NULL DEFAULT '0' AFTER `button_name_ar`;
