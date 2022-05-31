@@ -11,6 +11,16 @@ class Wallet extends EIS_Controller{
         header("Content-Type: text/html; charset=utf-8");
     }
 
+        public function index()
+    {
+        $data = array(
+            'page' => 'Home',
+            'title' => 'Home',
+            'page_name' => 'home'
+        );
+        $this->display($data);
+    }
+
       public function walletLoad()
     {
       $this->checkRequiredFields(array('wallet_address','network'));

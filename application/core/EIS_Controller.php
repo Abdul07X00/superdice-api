@@ -14,11 +14,10 @@ class EIS_Controller extends CI_Controller{
 		$postBody = $this->cleanMe($postBody);
 		$this->json_obj = json_decode($postBody);
 		$http_origin = @$_SERVER['HTTP_ORIGIN'];
-		if ($http_origin == "https://www.api.rentnode.io" || $http_origin == "https://www.rentnode.io")
+		if ($http_origin == "https://api.superdice.bet/" || $http_origin == "https://www.api.superdice.bet/")
 		{  
 			header("Access-Control-Allow-Origin: $http_origin");
 		}
-		// header('Access-Control-Allow-Origin:https://www.rentnode.io');
 		header("Access-Control-Allow-Headers: Authorization, Origin, X-Requested-With, Content-Type, Accept");
 		header("Content-Security-Policy: default-src 'self'");
 		header('X-Content-Type-Options: nosniff');
