@@ -171,7 +171,7 @@ class Wallet extends EIS_Controller{
         }else{
           $result = array(
             'success' => false,
-            'message' => "NO bet has been made!"
+            'message' => "Dosn't exist bet in this board!"
           );
           echo json_encode($result);
           exit;
