@@ -26,15 +26,21 @@
             public function createBoard()
         {
             $board = $this->db->select('*')->from("tbl_boards")->order_by("id","desc")->get()->row();
-            if(@$board->drawn){
+            if($board){
+                if(@$board->drawn){
+                    $data['drawn'] = "";
+                    $data['status'] = 1;
+                    $this->db->insert('tbl_boards', $data);
+                    $board_id = $this->db->insert_id();
+                    $board = $this->db->select('*')->from("tbl_boards")->where("id", $board_id)->get()->row();
+                }
+                $board->bets = $this->db->select('*')->from("tbl_board_bets")->where("board_id", $board->id)->get()->result();
+            }else{
                 $data['drawn'] = "";
                 $data['status'] = 1;
                 $this->db->insert('tbl_boards', $data);
                 $board_id = $this->db->insert_id();
                 $board = $this->db->select('*')->from("tbl_boards")->where("id", $board_id)->get()->row();
-            }
-            if($board){
-                $board->bets = $this->db->select('*')->from("tbl_board_bets")->where("board_id", $board->id)->get()->result();
             }
             return $board;
         }
