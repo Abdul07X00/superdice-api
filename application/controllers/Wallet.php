@@ -114,6 +114,7 @@ class Wallet extends EIS_Controller{
         if($transaction){
           $betArr['board_id'] = $this->jsonData('board_id',true);
           $betArr['wallet_address'] = $this->jsonData('wallet_address',true);
+          $betArr['method'] = "lost";
           $betArr['network'] = $this->jsonData('network',true);
           $betArr['currency'] = $this->jsonData('currency',true);
           $betArr['amount'] = $this->jsonData('amount',true);
