@@ -158,7 +158,6 @@ class Wallet extends EIS_Controller{
                 $timesDraw = $this->numberOfExistDrawn($bet->side, $drawn);
                 $draw_amount = $bet->amount * $timesDraw;
                 $transaction = $this->transaction($bet->wallet_address,"txn_token","earned", $this->jsonData('board_id',true), $bet->side, $bet->network, $bet->currency, $draw_amount, "add");
-                array_push($twiceArray, $oneSideBet);
               }
           }
           $result = array(
