@@ -174,9 +174,11 @@ class Wallet extends EIS_Controller{
                 }
             }
           }
+          $board = $this->wallet_model->getBoard($this->jsonData('board_id',true));
+          $board->drawn = json_decode($board->drawn);
           $result = array(
             'success' => true,
-            'data' => $this->wallet_model->getBoard($this->jsonData('board_id',true))
+            'data' => $board
           );
           echo json_encode($result);
           exit;
