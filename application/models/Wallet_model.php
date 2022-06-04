@@ -5,7 +5,7 @@
         {
             $wallets = [];
             if($wallet_address){
-                $wallets = $this->db->select('*')->from("tbl_wallets")->where(array("network"=>$network, "status"=>1))->order_by("id","desc")->get()->result();
+                $wallets = $this->db->select('*')->from("tbl_wallets")->where(array("network"=>$network, "status"=>1))->get()->result();
                 foreach($wallets as $wallet){
                     $wallet->option_values = json_decode($wallet->option_values);
                     $wallet->value = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address, "network"=>$wallet->network, "currency"=>$wallet->currency))->order_by("created_at","desc")->get()->row();
@@ -18,7 +18,7 @@
         {
             $transactions = [];
             if($wallet_address){
-                $transactions = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address))->get()->result();
+                $transactions = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address))->order_by("id","desc")->get()->result();
             }
             return $transactions;       
         }
