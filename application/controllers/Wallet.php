@@ -96,7 +96,9 @@ class Wallet extends EIS_Controller{
 
       public function boardLoad()
     {
-      $board = $this->wallet_model->createBoard();
+      $board_id = $this->jsonData('board_id',true);
+      $wallet_address = $this->jsonData('wallet_address',true);
+      $board = $this->wallet_model->createBoard($board_id, $wallet_address);
       if ($board) {
         $result = array(
             'success' => true,

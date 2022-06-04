@@ -23,9 +23,13 @@
             return $transactions;       
         }
 
-            public function createBoard()
+            public function createBoard($board_id, $wallet_address)
         {
-            $board = $this->db->select('*')->from("tbl_boards")->order_by("id","desc")->get()->row();
+            if($board_id){
+                $board = $this->db->select('*')->from("tbl_boards")->where("id", $board_id)->get()->row();
+            }else{
+                $board = $this->db->select('*')->from("tbl_boards")->order_by("id","desc")->get()->row();
+            }
             if($board){
                 if(@$board->drawn){
                     $data['drawn'] = "";
@@ -34,7 +38,9 @@
                     $board_id = $this->db->insert_id();
                     $board = $this->db->select('*')->from("tbl_boards")->where("id", $board_id)->get()->row();
                 }
-                $board->bets = $this->db->select('*')->from("tbl_board_bets")->where("board_id", $board->id)->get()->result();
+                if($wallet_address){
+                    $board->bets = $this->db->select('*')->from("tbl_board_bets")->where(array("board_id"=>$board->id, "wallet_address"=>$wallet_address))->get()->result();
+                }
             }else{
                 $data['drawn'] = "";
                 $data['status'] = 1;
