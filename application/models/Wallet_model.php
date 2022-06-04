@@ -29,15 +29,17 @@
                 $board = $this->db->select('*')->from("tbl_boards")->where("id", $board_id)->get()->row();
             }else{
                 $board = $this->db->select('*')->from("tbl_boards")->order_by("id","desc")->get()->row();
+                if($board){
+                    if(@$board->drawn){
+                        $data['drawn'] = "";
+                        $data['status'] = 1;
+                        $this->db->insert('tbl_boards', $data);
+                        $board_id = $this->db->insert_id();
+                        $board = $this->db->select('*')->from("tbl_boards")->where("id", $board_id)->get()->row();
+                    }
+                }
             }
             if($board){
-                if(@$board->drawn){
-                    $data['drawn'] = "";
-                    $data['status'] = 1;
-                    $this->db->insert('tbl_boards', $data);
-                    $board_id = $this->db->insert_id();
-                    $board = $this->db->select('*')->from("tbl_boards")->where("id", $board_id)->get()->row();
-                }
                 if($wallet_address){
                     $board->bets = $this->db->select('*')->from("tbl_board_bets")->where(array("board_id"=>$board->id, "wallet_address"=>$wallet_address))->get()->result();
                 }
@@ -80,6 +82,15 @@
             public function existBets($board_id)
         {
             $bets = $this->db->select('*')->from("tbl_board_bets")->where("board_id", $board_id)->get()->result();
+            return $bets;
+        }
+
+            public function getUserBoardbets($board_id, $wallet_address)
+        {
+            $bets = [];
+            if($wallet_address){
+                $bets = $this->db->select('*')->from("tbl_board_bets")->where(array("board_id"=>$board_id, "wallet_address"=> $wallet_address))->get()->result();
+            }
             return $bets;
         }
 
