@@ -18,7 +18,7 @@
         {
             $transactions = [];
             if($wallet_address){
-                $transactions = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address))->order_by("id","desc")->get()->result();
+                $transactions = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address))->order_by("id","desc")->limit(50)->get()->result();
             }
             return $transactions;       
         }
