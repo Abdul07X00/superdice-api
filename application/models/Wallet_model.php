@@ -136,7 +136,16 @@
             }
         }
 
-        
+            public function insertWithdrawRequest($data)
+        {
+            $res = $this->db->insert('tbl_withdraw_requests',$data);
+            if($res) {
+                return $this->db->insert_id();
+            }else{
+                return false;
+            }
+        }
+
             public function existSameBet($data)
         {
             $res = $this->db->select('*')->from("tbl_board_bets")->where(array("board_id"=>$data['board_id'], "wallet_address"=>$data['wallet_address'], "network"=> $data['network'], "currency"=> $data['currency'], "side"=> $data['side']))->get()->row();

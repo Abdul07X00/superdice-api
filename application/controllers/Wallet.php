@@ -66,6 +66,12 @@ class Wallet extends EIS_Controller{
       $this->checkRequiredFields(array('wallet_address','network','currency'));
       $data['status'] = 2;
       $this->wallet_model->updateTransaction($data, $this->jsonData('wallet_address',true), $this->jsonData('network',true), $this->jsonData('currency',true));
+      $data['wallet_address'] = $this->jsonData('wallet_address',true);
+      $data['network'] = $this->jsonData('network',true);
+      $data['currency'] = $this->jsonData('currency',true);
+      $data['amount'] = $this->jsonData('amount',true);
+      $data['status'] = 1;
+      $this->wallet_model->insertWithdrawRequest($data);
       $result = array(
         'success' => true,
         'message' =>"Withdraw request has been submitted, Within 30 min will process the request."
