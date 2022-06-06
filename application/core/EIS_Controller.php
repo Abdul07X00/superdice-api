@@ -151,6 +151,7 @@ class EIS_Controller extends CI_Controller{
 		}else{
 			$result = array(
 				'success' => false,
+				'error' => $decoded,
 				'message' =>"invalid transaction"
 			);
 			echo json_encode($result);
