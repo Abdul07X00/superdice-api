@@ -45,6 +45,7 @@ class Wallet extends EIS_Controller{
       public function deposit()
     {
       $this->checkRequiredFields(array('wallet_address','txn_token','network','currency','amount'));
+      $this->getTransactionStatus($this->jsonData('network',true), $this->jsonData('txn_token',true));
       $this->wallet_model->existTransaction($this->jsonData('txn_token',true));
       $data['wallet_address'] = $this->jsonData('wallet_address',true);
       $data['txn_token'] = $this->jsonData('txn_token',true);

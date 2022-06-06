@@ -130,6 +130,34 @@ class EIS_Controller extends CI_Controller{
 		return $draw;
 	}
 
+		public function getTransactionStatus($network, $txn_token)
+	{
+		$url  = "";
+		if($network == "ETHEREUM"){
+			$url = 'https://api.etherscan.io/api?module=transaction&action=gettxreceiptstatus&txhash='.$txn_token.'&apikey=TWPQUQZBYWQI632GBJW32WE4NXZ925YKVF';
+		}else if($network == "BINANCE"){
+			$url = 'https://api.bscscan.com/api?module=transaction&action=gettxreceiptstatus&txhash='.$txn_token.'&apikey=SHAHPJYVJRZEE4FIW8AWJ8QR1QYZAXPTWK';
+		}
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_VERBOSE, true);
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+		$curl_response = curl_exec($curl);
+		curl_close($curl);
+		$decoded = json_decode($curl_response);
+		if(@$decoded->result->status){
+			return;
+		}else{
+			$result = array(
+				'success' => false,
+				'message' =>"invalid transaction"
+			);
+			echo json_encode($result);
+			exit;
+		}
+	}
+
 	
 }
 

@@ -107,7 +107,7 @@
                 if($res){
                     $result = array(
                         'success' => false,
-                        'message' =>"txn_token not valid or exist"
+                        'message' =>"invalid transaction"
                     );
                     echo json_encode($result);
                     exit;
