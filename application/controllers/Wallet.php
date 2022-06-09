@@ -167,43 +167,34 @@ class Wallet extends EIS_Controller{
       $drawn = $this->shuffleDice();
       $existBoard = $this->wallet_model->getBoard($this->jsonData('board_id',true));
       if($existBoard){
+        $data["drawn"] = json_encode($drawn);
+        $this->wallet_model->updateBoard($data, $this->jsonData('board_id',true));
         $existBets = $this->wallet_model->existBets($this->jsonData('board_id',true));
         if($existBets){
-          if(!$existBoard->drawn){
-            $data["drawn"] = json_encode($drawn);
-            $this->wallet_model->updateBoard($data, $this->jsonData('board_id',true));
-            foreach($existBets as $bet){
-              if(in_array($bet->side, $drawn))
-                {
-                  $timesDraw = $this->numberOfExistDrawn($bet->side, $drawn);
-                  $draw_amount = ($bet->amount * $timesDraw) + $bet->amount;
-                  $transaction = $this->transaction($bet->wallet_address,"txn_token","earned", $this->jsonData('board_id',true), $bet->side, $bet->network, $bet->currency, $draw_amount, "add");
-                }
-            }
+          foreach($existBets as $bet){
+            if(in_array($bet->side, $drawn))
+              {
+                $timesDraw = $this->numberOfExistDrawn($bet->side, $drawn);
+                $draw_amount = ($bet->amount * $timesDraw) + $bet->amount;
+                $transaction = $this->transaction($bet->wallet_address,"txn_token","earned", $this->jsonData('board_id',true), $bet->side, $bet->network, $bet->currency, $draw_amount, "add");
+              }
           }
-          $board = $this->wallet_model->getBoard($this->jsonData('board_id',true));
-          if($this->jsonData('wallet_address',true)){
-            $board->bets = $this->wallet_model->getUserBoardbets($this->jsonData('board_id',true), $this->jsonData('wallet_address',true));
-          }
-          $board->drawn = json_decode($board->drawn);
-          $result = array(
-            'success' => true,
-            'data' => $board
-          );
-          echo json_encode($result);
-          exit;
-        }else{
-          $result = array(
-            'success' => false,
-            'message' => "Dosn't exist bet in this board!"
-          );
-          echo json_encode($result);
-          exit;
         }
+        $board = $this->wallet_model->getBoard($this->jsonData('board_id',true));
+        if($this->jsonData('wallet_address',true)){
+          $board->bets = $this->wallet_model->getUserBoardbets($this->jsonData('board_id',true), $this->jsonData('wallet_address',true));
+        }
+        $board->drawn = json_decode($board->drawn);
+        $result = array(
+          'success' => true,
+          'data' => $board
+        );
+        echo json_encode($result);
+        exit;
       }else{
         $result = array(
           'success' => false,
-          'message' => "Board doesn't exist"
+          'message' => "Board Expired"
         );
         echo json_encode($result);
         exit;
