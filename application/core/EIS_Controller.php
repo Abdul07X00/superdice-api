@@ -140,9 +140,7 @@ class EIS_Controller extends CI_Controller{
 			$url = 'https://api.bscscan.com/api?module=transaction&action=gettxreceiptstatus&txhash='.$txn_token.'&apikey=SHAHPJYVJRZEE4FIW8AWJ8QR1QYZAXPTWK';
 		}
 		if($network == "MONEY"){
-			if($txn_token == "12345678"){
 				$status = true;
-			}
 		}else{
 			$curl = curl_init();
 			curl_setopt($curl, CURLOPT_URL, $url);
