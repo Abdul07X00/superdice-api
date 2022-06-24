@@ -96,7 +96,7 @@
 
             public function getLastWalletHistory($wallet_address, $network, $currency)
         {
-            $transaction = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=> $wallet_address, "network"=> $network, "currency"=> $currency))->order_by("created_at", "desc")->get()->row();
+            $transaction = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=> $wallet_address, "network"=> $network, "currency"=> $currency))->order_by("id", "desc")->get()->row();
             return $transaction;
         }
 
