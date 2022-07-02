@@ -61,6 +61,23 @@ class Wallet extends EIS_Controller{
       exit;
     }
 
+      public function withdraw()
+    {
+      $this->checkRequiredFields(array('wallet_address','network','currency','amount'));
+      $data['wallet_address'] = $this->jsonData('wallet_address',true);
+      $data['txn_token'] = "withdraw_txn";
+      $data['method'] = "withdraw";
+      $data['network'] = $this->jsonData('network',true);
+      $data['currency'] = $this->jsonData('currency',true);
+      $transaction = $this->transaction($this->jsonData('wallet_address',true),"withdraw_txn","withdraw", 0,0, $this->jsonData('network',true), $this->jsonData('currency',true),$this->jsonData('amount',true), "minus");
+      $result = array(
+        'success' => true,
+        'message' =>"Withdrawal has been successful"
+      );
+      echo json_encode($result);
+      exit;
+    }
+
       public function withdrawRequest()
     {
       $this->checkRequiredFields(array('wallet_address','network','currency'));
@@ -215,6 +232,14 @@ class Wallet extends EIS_Controller{
       public function transaction($wallet_address, $txn_token, $method, $board_id, $side, $network, $currency, $amount, $operation)
     {
       $lastWallet = $this->wallet_model->getLastWalletHistory($wallet_address, $network, $currency);
+      if($operation == "minus" && $lastWallet->new_amount < $amount){
+        $result = array(
+          'success' => false,
+          'message' => "Insufficient balance"
+        );
+        echo json_encode($result);
+        exit;
+      }
       $data['wallet_address'] = $wallet_address;
       $data['txn_token'] = $txn_token;
       $data['method'] = $method;
