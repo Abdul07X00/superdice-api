@@ -1,5 +1,5 @@
 dispatch:
-  - url: "api.superdice.bet/*"
-    service: default
   - url: "superdice.bet/*"
-    service: web
+    service: default
+  - url: "api.superdice.bet/*"
+    service: api
