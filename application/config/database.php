@@ -74,10 +74,10 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'   => 'pgsql:host=35.193.145.78;port=3306;dbname=superdice_v1',
-	'hostname' => '35.193.145.78',
+	'dsn'   => 'pgsql:host=34.123.245.55;port=3306;dbname=superdice_v1',
+	'hostname' => '34.123.245.55',
 	'username' => 'root',
-	'password' => 'cd$V=Hg~~.T$Hi3v',
+	'password' => '4s,_RR4C0)6itD01',
 	'database' => 'superdice_v1',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
