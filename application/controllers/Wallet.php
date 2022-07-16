@@ -45,6 +45,7 @@ class Wallet extends EIS_Controller{
       public function deposit()
     {
       $this->checkRequiredFields(array('wallet_address','txn_token','network','currency','amount'));
+      $this->getTransactionStatus($this->jsonData('network',true), $this->jsonData('txn_token',true));
       $this->wallet_model->existTransaction($this->jsonData('txn_token',true));
       $data['wallet_address'] = $this->jsonData('wallet_address',true);
       $data['txn_token'] = $this->jsonData('txn_token',true);
@@ -60,11 +61,34 @@ class Wallet extends EIS_Controller{
       exit;
     }
 
+      public function withdraw()
+    {
+      $this->checkRequiredFields(array('wallet_address','network','currency','amount'));
+      $data['wallet_address'] = $this->jsonData('wallet_address',true);
+      $data['txn_token'] = "withdraw_txn";
+      $data['method'] = "withdraw";
+      $data['network'] = $this->jsonData('network',true);
+      $data['currency'] = $this->jsonData('currency',true);
+      $transaction = $this->transaction($this->jsonData('wallet_address',true),"withdraw_txn","withdraw", 0,0, $this->jsonData('network',true), $this->jsonData('currency',true),$this->jsonData('amount',true), "minus");
+      $result = array(
+        'success' => true,
+        'message' =>"Withdrawal has been successful"
+      );
+      echo json_encode($result);
+      exit;
+    }
+
       public function withdrawRequest()
     {
       $this->checkRequiredFields(array('wallet_address','network','currency'));
       $data['status'] = 2;
       $this->wallet_model->updateTransaction($data, $this->jsonData('wallet_address',true), $this->jsonData('network',true), $this->jsonData('currency',true));
+      $data['wallet_address'] = $this->jsonData('wallet_address',true);
+      $data['network'] = $this->jsonData('network',true);
+      $data['currency'] = $this->jsonData('currency',true);
+      $data['amount'] = $this->jsonData('amount',true);
+      $data['status'] = 1;
+      $this->wallet_model->insertWithdrawRequest($data);
       $result = array(
         'success' => true,
         'message' =>"Withdraw request has been submitted, Within 30 min will process the request."
@@ -160,43 +184,36 @@ class Wallet extends EIS_Controller{
       $drawn = $this->shuffleDice();
       $existBoard = $this->wallet_model->getBoard($this->jsonData('board_id',true));
       if($existBoard){
-        $existBets = $this->wallet_model->existBets($this->jsonData('board_id',true));
-        if($existBets){
-          if(!$existBoard->drawn){
-            $data["drawn"] = json_encode($drawn);
-            $this->wallet_model->updateBoard($data, $this->jsonData('board_id',true));
+        if(!$existBoard->drawn){
+          $data["drawn"] = json_encode($drawn);
+          $this->wallet_model->updateBoard($data, $this->jsonData('board_id',true));
+          $existBets = $this->wallet_model->existBets($this->jsonData('board_id',true));
+          if($existBets){
             foreach($existBets as $bet){
               if(in_array($bet->side, $drawn))
                 {
                   $timesDraw = $this->numberOfExistDrawn($bet->side, $drawn);
-                  $draw_amount = $bet->amount * $timesDraw;
+                  $draw_amount = ($bet->amount * $timesDraw) + $bet->amount;
                   $transaction = $this->transaction($bet->wallet_address,"txn_token","earned", $this->jsonData('board_id',true), $bet->side, $bet->network, $bet->currency, $draw_amount, "add");
                 }
             }
           }
-          $board = $this->wallet_model->getBoard($this->jsonData('board_id',true));
-          if($this->jsonData('wallet_address',true)){
-            $board->bets = $this->wallet_model->getUserBoardbets($this->jsonData('board_id',true), $this->jsonData('wallet_address',true));
-          }
-          $board->drawn = json_decode($board->drawn);
-          $result = array(
-            'success' => true,
-            'data' => $board
-          );
-          echo json_encode($result);
-          exit;
-        }else{
-          $result = array(
-            'success' => false,
-            'message' => "Dosn't exist bet in this board!"
-          );
-          echo json_encode($result);
-          exit;
         }
+        $board = $this->wallet_model->getBoard($this->jsonData('board_id',true));
+        if($this->jsonData('wallet_address',true)){
+          $board->bets = $this->wallet_model->getUserBoardbets($this->jsonData('board_id',true), $this->jsonData('wallet_address',true));
+        }
+        $board->drawn = json_decode($board->drawn);
+        $result = array(
+          'success' => true,
+          'data' => $board
+        );
+        echo json_encode($result);
+        exit;
       }else{
         $result = array(
           'success' => false,
-          'message' => "Board doesn't exist"
+          'message' => "Board Expired"
         );
         echo json_encode($result);
         exit;
@@ -215,6 +232,14 @@ class Wallet extends EIS_Controller{
       public function transaction($wallet_address, $txn_token, $method, $board_id, $side, $network, $currency, $amount, $operation)
     {
       $lastWallet = $this->wallet_model->getLastWalletHistory($wallet_address, $network, $currency);
+      if($operation == "minus" && $lastWallet->new_amount < $amount){
+        $result = array(
+          'success' => false,
+          'message' => "Insufficient balance"
+        );
+        echo json_encode($result);
+        exit;
+      }
       $data['wallet_address'] = $wallet_address;
       $data['txn_token'] = $txn_token;
       $data['method'] = $method;

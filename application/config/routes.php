@@ -53,10 +53,11 @@ $route['default_controller'] = 'wallet';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-// NFT
+// SUPER DICE
 $route['wallet/load'] = 'wallet/walletLoad';
 $route['wallet/deposit'] = 'wallet/deposit';
 $route['wallet/withdraw/request'] = 'wallet/withdrawRequest';
+$route['wallet/withdraw'] = 'wallet/withdraw';
 $route['transactions'] = 'wallet/loadTransactions';
 
 $route['board/load'] = 'wallet/boardLoad';

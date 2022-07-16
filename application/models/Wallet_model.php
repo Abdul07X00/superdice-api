@@ -8,7 +8,7 @@
                 $wallets = $this->db->select('*')->from("tbl_wallets")->where(array("network"=>$network, "status"=>1))->get()->result();
                 foreach($wallets as $wallet){
                     $wallet->option_values = json_decode($wallet->option_values);
-                    $wallet->value = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address, "network"=>$wallet->network, "currency"=>$wallet->currency))->order_by("created_at","desc")->get()->row();
+                    $wallet->value = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address, "network"=>$wallet->network, "currency"=>$wallet->currency))->order_by("id","desc")->get()->row();
                 }
             }
             return $wallets;
@@ -18,7 +18,7 @@
         {
             $transactions = [];
             if($wallet_address){
-                $transactions = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address))->order_by("id","desc")->get()->result();
+                $transactions = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=>$wallet_address))->order_by("id","desc")->limit(50)->get()->result();
             }
             return $transactions;       
         }
@@ -96,7 +96,7 @@
 
             public function getLastWalletHistory($wallet_address, $network, $currency)
         {
-            $transaction = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=> $wallet_address, "network"=> $network, "currency"=> $currency))->order_by("created_at", "desc")->get()->row();
+            $transaction = $this->db->select('*')->from("tbl_transactions")->where(array("wallet_address"=> $wallet_address, "network"=> $network, "currency"=> $currency))->order_by("id", "desc")->get()->row();
             return $transaction;
         }
 
@@ -107,7 +107,7 @@
                 if($res){
                     $result = array(
                         'success' => false,
-                        'message' =>"txn_token not valid or exist"
+                        'message' =>"invalid transaction"
                     );
                     echo json_encode($result);
                     exit;
@@ -136,7 +136,16 @@
             }
         }
 
-        
+            public function insertWithdrawRequest($data)
+        {
+            $res = $this->db->insert('tbl_withdraw_requests',$data);
+            if($res) {
+                return $this->db->insert_id();
+            }else{
+                return false;
+            }
+        }
+
             public function existSameBet($data)
         {
             $res = $this->db->select('*')->from("tbl_board_bets")->where(array("board_id"=>$data['board_id'], "wallet_address"=>$data['wallet_address'], "network"=> $data['network'], "currency"=> $data['currency'], "side"=> $data['side']))->get()->row();
