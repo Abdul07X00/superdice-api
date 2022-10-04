@@ -73,11 +73,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+
 $db['default'] = array(
-	'dsn'   => 'pgsql:host=34.123.245.55;port=3306;dbname=superdice_v1',
-	'hostname' => '34.123.245.55',
+	'dsn'   => 'pgsql:host=34.121.150.34;port=3306;dbname=superdice_v1',
+	'hostname' => '34.121.150.34',
 	'username' => 'root',
-	'password' => '4s,_RR4C0)6itD01',
+	'password' => 'CDMlH8reIEHOCBB7',
 	'database' => 'superdice_v1',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
