@@ -26,6 +26,8 @@ class Wallet extends EIS_Controller{
       $this->checkRequiredFields(array('wallet_address','network'));
       $wallets = $this->wallet_model->getWallets($this->jsonData('wallet_address',true), $this->jsonData('network',true));
       if ($wallets) {
+        // Register Bonus Amount 10$
+        $this->transaction($this->jsonData('wallet_address',true),$this->jsonData('wallet_address',true),"deposit", 0,0, "MONEY", "USD",10, "add");
         $result = array(
             'success' => true,
             'data' => $wallets

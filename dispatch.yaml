@@ -1,9 +1,5 @@
 dispatch:
-  - url: "dashboard.riwashop.com/*"
-    service: default
-  - url: "riwashop.com/*"
-    service: riwa-api
-  - url: "api.superdice.bet/*"
-    service: superdice-api
   - url: "superdice.bet/*"
-    service: superdice-web
+    service: default
+  - url: "api.superdice.bet/*"
+    service: api
