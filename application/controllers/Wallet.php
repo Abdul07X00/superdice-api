@@ -27,8 +27,10 @@ class Wallet extends EIS_Controller{
       $wallets = $this->wallet_model->getWallets($this->jsonData('wallet_address',true), $this->jsonData('network',true));
       if ($wallets) {
         // Register Bonus Amount 10$
-        $this->wallet_model->existTransaction($this->jsonData('wallet_address',true));
-        $this->transaction($this->jsonData('wallet_address',true),$this->jsonData('wallet_address',true),"deposit", 0,0, "MONEY", "USD",10, "add");
+        $exist = $this->wallet_model->existTransaction($this->jsonData('wallet_address',true));
+        if(!$exist){
+          $this->transaction($this->jsonData('wallet_address',true),$this->jsonData('wallet_address',true),"deposit", 0,0, "MONEY", "USD",10, "add");
+        }
         $result = array(
             'success' => true,
             'data' => $wallets
@@ -49,7 +51,15 @@ class Wallet extends EIS_Controller{
     {
       $this->checkRequiredFields(array('wallet_address','txn_token','network','currency','amount'));
       $this->getTransactionStatus($this->jsonData('network',true), $this->jsonData('txn_token',true));
-      $this->wallet_model->existTransaction($this->jsonData('txn_token',true));
+      $exist = $this->wallet_model->existTransaction($this->jsonData('txn_token',true));
+      if($exist){
+        $result = array(
+          'success' => false,
+          'message' =>"invalid transaction"
+        );
+        echo json_encode($result);
+        exit;
+      }
       $data['wallet_address'] = $this->jsonData('wallet_address',true);
       $data['txn_token'] = $this->jsonData('txn_token',true);
       $data['method'] = "deposit";

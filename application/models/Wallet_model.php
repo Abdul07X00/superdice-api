@@ -105,15 +105,12 @@
             if($txn_token){
                 $res = $this->db->select('*')->from("tbl_transactions")->where(array("txn_token"=> $txn_token))->get()->row();
                 if($res){
-                    $result = array(
-                        'success' => false,
-                        'message' =>"invalid transaction"
-                    );
-                    echo json_encode($result);
-                    exit;
+                    return true;
+                }else{
+                    return false;
                 }
             }
-            return;
+            return false;;
         }
 
             public function updateTransaction($data, $wallet_address, $network, $currency)
