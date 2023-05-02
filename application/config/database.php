@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 
 $db['default'] = array(
-	'dsn'   => 'pgsql:host=34.121.150.34;port=3306;dbname=superdice_v1',
-	'hostname' => '34.121.150.34',
-	'username' => 'root',
+	'dsn'   => 'pgsql:host=ishro-databases.mysql.database.azure.com;port=3306;dbname=superdice_v1',
+	'hostname' => 'ishro-databases.mysql.database.azure.com',
+	'username' => 'ishro',
 	'password' => 'CDMlH8reIEHOCBB7',
 	'database' => 'superdice_v1',
 	'dbdriver' => 'mysqli',
