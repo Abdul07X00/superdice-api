@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/18b93a6e-663b-4bb4-93f8-7d0d2de9db4d/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/superdice-api",
+    "appService.deploySubpath": "."
+}

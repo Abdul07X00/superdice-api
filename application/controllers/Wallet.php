@@ -29,7 +29,7 @@ class Wallet extends EIS_Controller{
         // Register Bonus Amount 10$
         $exist = $this->wallet_model->existTransaction($this->jsonData('wallet_address',true));
         if(!$exist){
-          $this->transaction($this->jsonData('wallet_address',true),$this->jsonData('wallet_address',true),"deposit", 0,0, "MONEY", "USD",10, "add");
+          $this->transaction($this->jsonData('wallet_address',true),$this->jsonData('wallet_address',true),"deposit", 0,0, "ETHEREUM", "USDT",20, "add");
         }
         $result = array(
             'success' => true,
