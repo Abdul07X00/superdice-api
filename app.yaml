@@ -1,0 +1,7 @@
+runtime: php81 # Replace with php74 to use PHP 7.4
+service: api
+handlers:
+  # Serve your app through a front controller at index.php or public/index.php.
+  - url: .*
+    script: auto
+    secure: always

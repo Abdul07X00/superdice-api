@@ -1,0 +1,5 @@
+dispatch:
+  - url: "superdice.club/*"
+    service: default
+  - url: "api.superdice.club/*"
+    service: api
